@@ -18,8 +18,8 @@ enum OpCode
   op_call,
   op_set,
   op_add,
-  op_move,
   op_sub,
+  op_move,
   op_dump,
   op_end
 };
