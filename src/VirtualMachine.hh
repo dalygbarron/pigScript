@@ -8,7 +8,8 @@
 #include <map>
 #include <vector>
 
-#include "Instruction.h"
+#include "Instruction.hh"
+#include "Script.hh"
 
 
 class VirtualMachine

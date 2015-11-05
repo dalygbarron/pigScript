@@ -5,13 +5,14 @@
 #define TOKENIZER_H
 
 
+#include <vector>
 #include <stdio.h>
 
 
 //turn a string into tokens
-char * * tokenize(char * data);
+std::vector<char *> * tokenize(char const * data);
 
 //turn a file into tokens
-char * * tokenize(FILE * dataFile);
+std::vector<char *> * tokenize(FILE * dataFile);
 
 #endif

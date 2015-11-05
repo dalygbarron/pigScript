@@ -5,6 +5,9 @@
 #define INSTRUCTION_H
 
 
+#include <stdint.h>
+
+
 //the types of instructions there are
 enum OpCode
 {
