@@ -85,8 +85,40 @@ Script * Parser::parseTokens(std::vector<char *> * tokens)
     else if (strcmp(tokens->at(i),"call"))
     {
       OpCode code = op_call;
+      int nArgs = parseInt(tokens->at(i + 1));
+      uint32_t * args = new uint32_t[nArgs];
+
+      //put all the arguments into the argument array
+      for (int argI = 0;argI < nArgs;argI++)
+      {
+        char * arg = tokens->at(i + 2 + argI);
+
+        //if it's a string literal
+        if (arg[0] == '\"')
+        {
+          //copy the string so that it can outlive the token vector,
+          //and put it in the thing
+        }
+
+        //if it's a variable
+        else if (!isdigit(arg[0]))
+        {
+          args[argI] = symbolise(arg);
+        }
+
+        //otherwise it's a number
+        else
+        {
+          args[argI] = parseInt(arg);//TODO: pretty sure this is wrong
+        }
 
 
+      }
+
+      //now put the instruction in
+
+      //get it past all the arguments to the next instruction token
+      i += nArgs + 1;
     }
   }
 }

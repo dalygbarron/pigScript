@@ -92,7 +92,7 @@ void VirtualMachine::execute(Script script)
 }
 
 
-void VirtualMachine::register(int (func*)(void * args,int nArgs),char const * name)
+void VirtualMachine::register(int (*func)(void * args,int nArgs),char const * name)
 {
 
 }

@@ -19,13 +19,13 @@ public:
   void execute(Script script);
 
   //register a function with the virtual machine
-  void register(int (func*)(void * args,int nArgs),char const * name);
+  void register(AddOn * newAddOn,char const * name);
 
 private:
   //the map of functions to their names so that scripts can call them
-  std::map<char const *,int (func*)(void * args,int nArgs)> functions;
+  std::map<char const *,AddOn> functions;
   //where the running script's variables go
-  std::vector<int> variables(10);
+  std::vector<int> variables();
 };
 
 
