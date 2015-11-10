@@ -32,6 +32,7 @@ class Instruction
 {
 public:
   //creates an instruction with it's op code, it's arguments and the number of them
+  //it takes ownership of those args too
   Instruction(OpCode pCode,uint32_t * pArgs,int pNArgs);
 
   //deletes the instruction and it's data
@@ -40,7 +41,7 @@ public:
   //instruction's opcode
   OpCode const code;
   //instruction's arguments
-  uint32_t const * args;
+  uint32_t * args;
   //number of arguments
   int const nArgs;
 };

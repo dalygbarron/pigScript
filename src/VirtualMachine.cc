@@ -3,9 +3,19 @@
 #include "Instruction.hh"
 
 
+VirtualMachine::~VirtualMachine()
+{
+  for (std::map<char *,addon,cmp_str>::iterator it = functions.begin();
+       it != functions.end();++it)
+  {
+    delete it->first;
+  }
+}
+
+
 void VirtualMachine::execute(Script script)
 {
-  instruction = script.getInstructionPtr();
+  Instruction const * instruction = script.getInstructionPtr();
   while (instruction != NULL)
   {
     switch(instruction->code)
@@ -45,9 +55,10 @@ void VirtualMachine::execute(Script script)
       break;
 
     case op_call:
-      if (functions.count(instruction->args[1]) == 1)
+      if (functions.count(instruction->args[1]) > 0)
       {
-        //do stuff
+        //do stuff'
+        printf("calling %s\n",instruction->args[1]);
       }
       else
       {
@@ -92,7 +103,7 @@ void VirtualMachine::execute(Script script)
 }
 
 
-void VirtualMachine::register(int (*func)(void * args,int nArgs),char const * name)
+void VirtualMachine::registerAddon(addon newAddon,char * name)
 {
-
+  functions[name] = newAddon;
 }
