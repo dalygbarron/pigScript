@@ -55,7 +55,7 @@ void VirtualMachine::execute(Script script)
       break;
 
     case op_call:
-      if (functions.count(instruction->args[1]) > 0)
+      if (functions.count(static_cast<char *>(instruction->args[1])) == 1)
       {
         //do stuff'
         printf("calling %s\n",instruction->args[1]);

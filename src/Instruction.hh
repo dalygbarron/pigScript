@@ -33,7 +33,7 @@ class Instruction
 public:
   //creates an instruction with it's op code, it's arguments and the number of them
   //it takes ownership of those args too
-  Instruction(OpCode pCode,uint32_t * pArgs,int pNArgs);
+  Instruction(OpCode pCode,int * pArgs,char * * pStrings,int pNStrings);
 
   //deletes the instruction and it's data
   ~Instruction();
@@ -41,9 +41,11 @@ public:
   //instruction's opcode
   OpCode const code;
   //instruction's arguments
-  uint32_t * args;
-  //number of arguments
-  int const nArgs;
+  int * args;
+  //instruction's string literals
+  char * * strings;
+  //the number of strings
+  int nStrings;
 };
 
 

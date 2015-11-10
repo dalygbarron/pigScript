@@ -45,7 +45,7 @@ private:
   //the map of functions to their names so that scripts can call them
   std::map<char *,addon,cmp_str> functions;
   //where the running script's variables go
-  std::vector<int> variables();
+  std::vector<int> variables;
 };
 
 
