@@ -4,6 +4,8 @@
 #include <vector>
 #include <cwctype>
 
+#include "danylib/danylib.hh"
+
 
 #define TOKEN_BUFFER_LENGTH 1024
 #define FILE_BUFFER_LENGTH 4096
@@ -12,31 +14,9 @@
 #define QUOTE '\"'
 
 
-
-using namespace std;
-
-
-char * fit(char * data)
+std::vector<char *> * tokenize(char const * data)
 {
-  printf("fit %s\n",data);
-
-  int length = 0;
-  while (data[length] != '\0')
-    length++;
-
-  char * fittedData = new char[length];
-  for (int i = 0;i < length;i++)
-  {
-    fittedData[i] = data[i];
-  }
-
-  return fittedData;
-}
-
-
-vector<char *> * tokenize(char const * data)
-{
-  vector<char *> * tokens = new vector<char *>();
+  std::vector<char *> * tokens = new std::vector<char *>();
   char buffer[TOKEN_BUFFER_LENGTH];
   int bufferIndex = 0;
   bool inString = false;
@@ -51,9 +31,8 @@ vector<char *> * tokenize(char const * data)
       if (data[i] == QUOTE)
       {
         //put the string into the list of tokens
-        buffer[bufferIndex] = '\"';
-        buffer[bufferIndex + 1] = '\0';
-        tokens->push_back(fit(buffer));
+        buffer[bufferIndex] = '\0';
+        tokens->push_back(danylib_fit(buffer));
 
         //get ready for the next token
         inString = false;
@@ -67,6 +46,7 @@ vector<char *> * tokenize(char const * data)
         bufferIndex++;
       }
     }
+
 
     //if it's currently inside a comment
     else if (inComment)
@@ -100,7 +80,7 @@ vector<char *> * tokenize(char const * data)
         {
           //put the string into the list of tokens
           buffer[bufferIndex] = '\0';
-          tokens->push_back(fit(buffer));
+          tokens->push_back(danylib_fit(buffer));
 
           //get ready for the next token
           bufferIndex = 0;
@@ -115,7 +95,7 @@ vector<char *> * tokenize(char const * data)
         {
           //put the string into the list of tokens
           buffer[bufferIndex] = '\0';
-          tokens->push_back(fit(buffer));
+          tokens->push_back(danylib_fit(buffer));
 
           //get ready for the next token
           bufferIndex = 0;
@@ -136,14 +116,15 @@ vector<char *> * tokenize(char const * data)
   {
     //put the string into the list of tokens
     buffer[bufferIndex] = '\0';
-    tokens->push_back(fit(buffer));
+    printf("endthing %s\n",buffer);
+    tokens->push_back(danylib_fit(buffer));
   }
 
   //now return those tasty little beans
   return tokens;
 }
 
-vector<char *> * tokenize(FILE * dataFile)
+std::vector<char *> * tokenize(FILE * dataFile)
 {
   char buffer[FILE_BUFFER_LENGTH];
   char c;
@@ -152,10 +133,9 @@ vector<char *> * tokenize(FILE * dataFile)
   while ((c = fgetc(dataFile)) != EOF)
   {
     buffer[i] = c;
-
     i++;
   }
   buffer[i] = '\0';
 
-  return tokenize(fit(buffer));
+  return tokenize(danylib_fit(buffer));
 }

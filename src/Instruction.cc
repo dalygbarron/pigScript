@@ -3,19 +3,24 @@
 #include <stdint.h>
 
 
-Instruction::Instruction(OpCode pCode,uint32_t * pArgs,int pNArgs):
+Instruction::Instruction(OpCode pCode):
+code(pCode)
+{
+  args = nullptr;
+}
+
+
+Instruction::Instruction(OpCode pCode,char * pArgs):
 code(pCode),
-args(pArgs),
-strings(pStrings)
-nStrings(pNStrings)
+args(pArgs)
 {}
 
 
 Instruction::~Instruction()
 {
-  delete[] args;
-  for (int i = 0;i < nStrings;i++)
+  if (args != nullptr)
   {
-    delete[] strings[i];
+    delete[] args;
+    args = nullptr;
   }
 }

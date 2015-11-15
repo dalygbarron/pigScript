@@ -24,7 +24,7 @@ public:
 
 private:
   //the instructions that it is made up of
-  std::vector<Instruction> * instructions;
+  std::vector<Instruction *> instructions;
 };
 
 

@@ -17,7 +17,7 @@
 //this is so that I can use a c string as a map key
 struct cmp_str
 {
-   bool operator()(char const * a, char const * b)
+   bool operator()(char const * a, char const * b)const
    {
       return std::strcmp(a, b) < 0;
    }
@@ -25,7 +25,7 @@ struct cmp_str
 
 
 //the type of the function pointers that are called through the bytecode
-typedef int (*addon)(uint32_t * args,int nArgs);
+typedef int (*addon)(char * args);
 
 
 class VirtualMachine
@@ -39,9 +39,14 @@ public:
 
   //register a function with the virtual machine
   //takes ownership of the name
-  void registerAddon(addon newAddon,char const * name);
+  void registerAddon(addon newAddon,char * name);
 
 private:
+  //displays all of the current variables on the commandline
+  void dump();
+  //calls a function from within the bytecode
+  void call(char * args);
+
   //the map of functions to their names so that scripts can call them
   std::map<char *,addon,cmp_str> functions;
   //where the running script's variables go

@@ -16,7 +16,7 @@ VirtualMachine::~VirtualMachine()
 void VirtualMachine::execute(Script script)
 {
   Instruction const * instruction = script.getInstructionPtr();
-  while (instruction != NULL)
+  while (instruction != nullptr)
   {
     switch(instruction->code)
     {
@@ -55,16 +55,7 @@ void VirtualMachine::execute(Script script)
       break;
 
     case op_call:
-      if (functions.count(static_cast<char *>(instruction->args[1])) == 1)
-      {
-        //do stuff'
-        printf("calling %s\n",instruction->args[1]);
-      }
-      else
-      {
-        printf("%s is not a registered function, but continuing with execution\n",
-               instruction->args[1]);
-      }
+      call(instruction->args);
       break;
 
     case op_set:
@@ -86,16 +77,11 @@ void VirtualMachine::execute(Script script)
       break;
 
     case op_dump:
-      int i = 0;
-      for (std::vector<int>::iterator it = variables.begin();it != variables.end(); ++it)
-      {
-        printf("variables[%d] = %d\n",i,*it);
-        i++;
-      }
+      dump();
       break;
 
     case op_end:
-      instruction = NULL;
+      instruction = nullptr;
       break;
     }
   }
@@ -106,4 +92,28 @@ void VirtualMachine::execute(Script script)
 void VirtualMachine::registerAddon(addon newAddon,char * name)
 {
   functions[name] = newAddon;
+}
+
+
+void VirtualMachine::dump()
+{
+  int i = 0;
+  for (std::vector<int>::iterator it = variables.begin();it != variables.end(); ++it)
+  {
+    printf("variables[%d] = %d\n",i,*it);
+    i++;
+  }
+}
+
+void VirtualMachine::call(char * args)
+{
+  if (functions.count(args + 1) == 1)
+  {
+    //do stuff'
+    printf("calling %s\n",args + 1);
+  }
+  else
+  {
+    printf("%s is not a registered function, but continuing with execution\n",args + 1);
+  }
 }

@@ -31,21 +31,20 @@ enum OpCode
 class Instruction
 {
 public:
+  //create an instruction without any arguments
+  Instruction(OpCode pCode);
+
   //creates an instruction with it's op code, it's arguments and the number of them
   //it takes ownership of those args too
-  Instruction(OpCode pCode,int * pArgs,char * * pStrings,int pNStrings);
+  Instruction(OpCode pCode,char * pArgs);
 
   //deletes the instruction and it's data
   ~Instruction();
 
   //instruction's opcode
-  OpCode const code;
+  OpCode code;
   //instruction's arguments
-  int * args;
-  //instruction's string literals
-  char * * strings;
-  //the number of strings
-  int nStrings;
+  char * args;
 };
 
 
