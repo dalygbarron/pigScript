@@ -40,14 +40,14 @@ Script * parseTokens(std::vector<char *> * tokens)
 {
   std::vector<char *> symbols;
 
-  std::vector<Instruction> * instructions = new std::vector<Instruction>();
+  Script * script = new Script();
   int i = 0;
 
   while (i < tokens->size())
   {
     if (strcmp(tokens->at(i),"jmp") == 0)
     {
-      instructions->emplace_back(op_jmp);
+      script->instructions.push_back(new Instruction(op_jmp));
       i++;
     }
 
@@ -55,7 +55,7 @@ Script * parseTokens(std::vector<char *> * tokens)
     {
       char * args = new char;
       *args = symbolise(&symbols,tokens->at(i + 1));
-      instructions->emplace_back(op_jeq,args);
+      script->instructions.push_back(new Instruction(op_jeq,args));
       i += 2;
     }
 
@@ -63,7 +63,7 @@ Script * parseTokens(std::vector<char *> * tokens)
     {
       char * args = new char;
       *args = symbolise(&symbols,tokens->at(i + 1));
-      instructions->emplace_back(op_jne,args);
+      script->instructions.push_back(new Instruction(op_jne,args));
       i += 2;
     }
 
@@ -71,7 +71,7 @@ Script * parseTokens(std::vector<char *> * tokens)
     {
       char * args = new char;
       *args = symbolise(&symbols,tokens->at(i + 1));
-      instructions->emplace_back(op_jlt,args);
+      script->instructions.push_back(new Instruction(op_jlt,args));
       i += 2;
     }
 
@@ -79,7 +79,7 @@ Script * parseTokens(std::vector<char *> * tokens)
     {
       char * args = new char;
       *args = symbolise(&symbols,tokens->at(i + 1));
-      instructions->emplace_back(op_jle,args);
+      script->instructions.push_back(new Instruction(op_jle,args));
       i += 2;
     }
 
@@ -87,7 +87,7 @@ Script * parseTokens(std::vector<char *> * tokens)
     {
       char * args = new char;
       *args = symbolise(&symbols,tokens->at(i + 1));
-      instructions->emplace_back(op_jgt,args);
+      script->instructions.push_back(new Instruction(op_jgt,args));
       i += 2;
     }
 
@@ -95,7 +95,7 @@ Script * parseTokens(std::vector<char *> * tokens)
     {
       char * args = new char;
       *args = symbolise(&symbols,tokens->at(i + 1));
-      instructions->emplace_back(op_jge,args);
+      script->instructions.push_back(new Instruction(op_jge,args));
       i += 2;
     }
 
@@ -135,7 +135,7 @@ Script * parseTokens(std::vector<char *> * tokens)
       }
 
       //now put the instruction in
-      instructions->emplace_back(op_call,danylib_fit(args));
+      script->instructions.push_back(new Instruction(op_call,danylib_fit(args)));
 
       //get it past all the arguments to the next instruction token
       i += nArgs + 1;
@@ -147,7 +147,7 @@ Script * parseTokens(std::vector<char *> * tokens)
       args[0] = atoi(tokens->at(i + 1));
       args[1] = symbolise(&symbols,tokens->at(i + 2));
 
-      instructions->emplace_back(op_set,args);
+      script->instructions.push_back(new Instruction(op_set,args));
 
       i += 3;
     }
@@ -159,14 +159,14 @@ Script * parseTokens(std::vector<char *> * tokens)
       args[1] = symbolise(&symbols,tokens->at(i + 2));
       args[2] = symbolise(&symbols,tokens->at(i + 3));
 
-      instructions->emplace_back(op_set,args);
+      script->instructions.push_back(new Instruction(op_add,args));
 
       i += 4;
     }
 
     else if (strcmp(tokens->at(i),"dump") == 0)
     {
-      instructions->emplace_back(op_set);
+      script->instructions.push_back(new Instruction(op_dump));
 
       i++;
     }
@@ -178,5 +178,5 @@ Script * parseTokens(std::vector<char *> * tokens)
       i++;
     }
   }
-  return new Script(instructions);
+  return script;
 }

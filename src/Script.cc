@@ -3,18 +3,13 @@
 #include <vector>
 
 
-Script::Script(std::vector<Instruction> * pInstructions):
-instructions(pInstructions)
-{}
-
-
 Script::~Script()
 {
-  delete instructions;
+  //TODO: delete the instructions
 }
 
 
-Instruction const * Script::getInstructionPtr()
+Instruction * * Script::getInstructionPtr()
 {
-  return &(*instructions)[0];
+  return &(instructions[0]);
 }

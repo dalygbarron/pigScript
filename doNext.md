@@ -2,6 +2,11 @@
 I need to make it that script has a vector of pointers to instructions now since they are
 uncopyable and therefore cannot be put directly into a vector in any way.
 
+Passing out pointers to pointers is pretty unsafe, particularly since they can't be const
+for some reason. I think I need to figure out some other way. Actually I can just iterate
+over the vector of them or something storing the index and changing it on jumps, then
+stopping when it hits an end instruction or it reaches the end.
+
 # 12/11/2015
 nopppp it shall be a single array of chars, this means that there can only be a maximum
 of 256 variables, but that's a heap since they are basically the same as registers in

@@ -13,14 +13,13 @@
 class Script
 {
 public:
-  //create a new script and give it it's instructions
-  Script(std::vector<Instruction> * pInstructions);
-
   //destroy the script and it's instructions
   ~Script();
 
   //gives you a pointer to the first instruction
-  Instruction const * getInstructionPtr();
+  Instruction * * getInstructionPtr();
+
+  friend Script * parseTokens(std::vector<char *> * tokens);
 
 private:
   //the instructions that it is made up of

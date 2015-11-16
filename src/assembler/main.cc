@@ -16,14 +16,14 @@ int main(int argc,char * * argv)
 
   Script * instructions = parseTokens(tokens);
 
-  Instruction const * instruction = instructions->getInstructionPtr();
-  printf("%d\n",instruction->code);
+  Instruction * * instruction = instructions->getInstructionPtr();
+  printf("%d\n",(*instruction)->code);
   while (false)
   {
-    printf("%d\n",instruction->code);
+    printf("%d\n",(*instruction)->code);
     instruction++;
 
-    if (instruction->code == op_end)
+    if ((*instruction)->code == op_end)
     {
       break;
     }

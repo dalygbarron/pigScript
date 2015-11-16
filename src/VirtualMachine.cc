@@ -15,43 +15,48 @@ VirtualMachine::~VirtualMachine()
 
 void VirtualMachine::execute(Script script)
 {
-  Instruction const * instruction = script.getInstructionPtr();
-  while (instruction != nullptr)
+  Instruction * * instructionPtr = script.getInstructionPtr();
+  Instruction const * instruction = *instructionPtr;
+
+
+  while (instructionPtr != nullptr)
   {
+    Instruction const * instruction = *instructionPtr;
+
     switch(instruction->code)
     {
     case op_jmp:
-      instruction = script.getInstructionPtr() + variables[instruction->args[0]];
+      instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
       break;
 
     case op_jeq:
       if (variables[instruction->args[1]] == 0)
-        instruction = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
       break;
 
     case op_jne:
       if (variables[instruction->args[1]] != 0)
-        instruction = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
       break;
 
     case op_jlt:
       if (variables[instruction->args[1]] < 0)
-        instruction = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
       break;
 
     case op_jle:
       if (variables[instruction->args[1]] <= 0)
-        instruction = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
       break;
 
     case op_jgt:
       if (variables[instruction->args[1]] > 0)
-        instruction = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
       break;
 
     case op_jge:
       if (variables[instruction->args[1]] >= 0)
-        instruction = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
       break;
 
     case op_call:
@@ -81,7 +86,7 @@ void VirtualMachine::execute(Script script)
       break;
 
     case op_end:
-      instruction = nullptr;
+      instructionPtr = nullptr;
       break;
     }
   }

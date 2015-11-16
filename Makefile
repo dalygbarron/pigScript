@@ -1,5 +1,5 @@
 CC = g++
-FLAGS = -static -std=c++11 -g
+FLAGS = -static -std=c++11
 LIBS = -L /usr/local/lib/danylib/ -l danylib
 
 assembler: src/assembler/*.cc
