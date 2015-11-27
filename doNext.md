@@ -1,4 +1,41 @@
-#15/11/2015
+# 25/11/2015
+no wait, it can write the addresses in at compile time. it will use a label manager which
+both lets you make a reference to a label, or set the location of the label. In order to
+put the addresses into the references to the label at the end, pointers to all of the
+references can be registered with the label manager along with the label they point to,
+and then they can just be filled in at the end.
+
+# 24/11/2015
+When the virtual machine reaches the end of the script it segmentation faults because I
+didn't add end instructions, but I think I won't i'll just make it figure out that the end
+is nigh.
+
+Ok, so the feature that is still missing is labels. I need to make it that the parser
+reads them and turns them into variables, the only problem is that the label doesn't come
+first. but wait!! it still works, symbolise will simply create the label symbol if it
+doesn't exist, and then when it gets to the label definition it sets it's value in the
+symbol table. then somehow it needs to make virtual machine know these values. maybe it
+can simply append some set instructions to the start of the program. the other problem
+then is that labels will be taking up space meant for variables, and although this isn't
+really designed or large programs, a maximum of 256 variables and labels seem a bit
+restrictive. Instead I can have a separate label table and have them addressed with 2
+bytes, then I can have special jump instructions that really do jump to the address in a
+variable if I find I need them, but then also I can have jump instructions that use the
+label table instead, and it can be provided at the start of the compiled code.
+
+# 19/11/2015
+ok so for some reason the arguments that call has are fucked in some way. Other than that
+saving seems to work nicely.
+
+# 18/11/2015
+I'm making it that call instructions hold the length of all their arguments in their first
+argument so that it can be saved, since otherwise you can't know when it is being written
+what is a string and what is a variable.
+
+ARRGGG wait since each argument is only a single char, it can't store the length. fear not
+i'll make it 2 bytes and then it will be easily long enough.
+
+# 15/11/2015
 I need to make it that script has a vector of pointers to instructions now since they are
 uncopyable and therefore cannot be put directly into a vector in any way.
 

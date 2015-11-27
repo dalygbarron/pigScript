@@ -14,14 +14,15 @@
 #define ARG_BUFFER_SIZE 2048
 
 
-static char symbolise(std::vector<char *> * symbols,char * token)
+static char symbolise(Script const * script,std::vector<char *> * symbols,char * token)
 {
+  //search for it in the table
   char i = 0;
   for (std::vector<char *>::iterator it = symbols->begin();
        it != symbols->end(); ++it)
   {
     //if it's already in the table
-    if (strcmp(token,*it))
+    if (strcmp(token,*it) == 0)
     {
       return i;
     }
@@ -47,11 +48,12 @@ Script * parseTokens(std::vector<char *> * tokens)
   {
     if (strcmp(tokens->at(i),"jmp") == 0)
     {
+      *args = symbolise(&symbols,tokens->at(i + 1));
       script->instructions.push_back(new Instruction(op_jmp));
       i++;
     }
 
-    else if (strcmp(tokens->at(i),"jeq") == 0)
+    else if (strcmp(tokens->at(i),"jeq") == 0)//TODO: join all the conditional jumps
     {
       char * args = new char;
       *args = symbolise(&symbols,tokens->at(i + 1));
@@ -103,10 +105,11 @@ Script * parseTokens(std::vector<char *> * tokens)
     {
       OpCode code = op_call;
       int nArgs = atoi(tokens->at(i + 1));
+
       char args[ARG_BUFFER_SIZE];
 
       //put all the arguments into the argument array
-      int placement = 0;
+      int placement = 2;
       for (int argI = 0;argI < nArgs;argI++)
       {
         char * arg = tokens->at(i + 2 + argI);
@@ -129,16 +132,21 @@ Script * parseTokens(std::vector<char *> * tokens)
         //if it's a variable
         else
         {
-          args[placement] = symbolise(&symbols,arg);
+          args[placement] = symbolise(script,&symbols,arg);
           placement++;
         }
       }
+      //put the length of the arguments into first place
+      args[0] = (char)(placement & 0xFF);
+      args[1] = (char)((placement >> 8) & 0xFF);
+
+      printf("placement:%d\n",placement);
 
       //now put the instruction in
-      script->instructions.push_back(new Instruction(op_call,danylib_fit(args)));
+      script->instructions.push_back(new Instruction(op_call,danylib_fitToLength(args,placement)));
 
       //get it past all the arguments to the next instruction token
-      i += nArgs + 1;
+      i += nArgs + 2;
     }
 
     else if (strcmp(tokens->at(i),"set") == 0)
@@ -167,7 +175,6 @@ Script * parseTokens(std::vector<char *> * tokens)
     else if (strcmp(tokens->at(i),"dump") == 0)
     {
       script->instructions.push_back(new Instruction(op_dump));
-
       i++;
     }
 

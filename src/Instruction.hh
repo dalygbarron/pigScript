@@ -6,6 +6,7 @@
 
 
 #include <stdint.h>
+#include <stdio.h>
 
 
 //the types of instructions there are
@@ -38,8 +39,14 @@ public:
   //it takes ownership of those args too
   Instruction(OpCode pCode,char * pArgs);
 
+  //creates an instruction from a file
+  Instruction(FILE * inFile);
+
   //deletes the instruction and it's data
   ~Instruction();
+
+  //save the instruction to an open file
+  void toFile(FILE * outFile);
 
   //instruction's opcode
   OpCode code;

@@ -13,12 +13,25 @@
 class Script
 {
 public:
+  //create a blank script
+  Script();
+
+  //create a script from a file
+  Script(char const * filename);
+
   //destroy the script and it's instructions
   ~Script();
 
-  //gives you a pointer to the first instruction
-  Instruction * * getInstructionPtr();
+  //get an instruction at a specific point in the script
+  Instruction * operator[](int index);
 
+  //writes the script into a file
+  void toFile(char const * filename);
+
+  //gives you the length of the script
+  int size();
+
+  //let's the parsing thingo access the instructions
   friend Script * parseTokens(std::vector<char *> * tokens);
 
 private:

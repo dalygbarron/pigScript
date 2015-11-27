@@ -3,6 +3,15 @@
 #include "Instruction.hh"
 
 
+VirtualMachine::VirtualMachine()
+{
+  for (int i = 0;i < N_VARIABLES;i++)
+  {
+    variables[i] = 0;
+  }
+}
+
+
 VirtualMachine::~VirtualMachine()
 {
   for (std::map<char *,addon,cmp_str>::iterator it = functions.begin();
@@ -13,50 +22,50 @@ VirtualMachine::~VirtualMachine()
 }
 
 
-void VirtualMachine::execute(Script script)
+void VirtualMachine::execute(Script * scriptPtr)
 {
-  Instruction * * instructionPtr = script.getInstructionPtr();
-  Instruction const * instruction = *instructionPtr;
+  Script script = *scriptPtr;
 
+  int instructionIndex = 0;
 
-  while (instructionPtr != nullptr)
+  while (instructionIndex != -1 && instructionIndex < script.size())
   {
-    Instruction const * instruction = *instructionPtr;
+    Instruction * instruction = script[instructionIndex];
 
     switch(instruction->code)
     {
     case op_jmp:
-      instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
+      instructionIndex = variables[instruction->args[0]];
       break;
 
     case op_jeq:
       if (variables[instruction->args[1]] == 0)
-        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionIndex = variables[instruction->args[0]];
       break;
 
     case op_jne:
       if (variables[instruction->args[1]] != 0)
-        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionIndex = variables[instruction->args[0]];
       break;
 
     case op_jlt:
       if (variables[instruction->args[1]] < 0)
-        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionIndex = variables[instruction->args[0]];
       break;
 
     case op_jle:
       if (variables[instruction->args[1]] <= 0)
-        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionIndex = variables[instruction->args[0]];
       break;
 
     case op_jgt:
       if (variables[instruction->args[1]] > 0)
-        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionIndex = variables[instruction->args[0]];
       break;
 
     case op_jge:
       if (variables[instruction->args[1]] >= 0)
-        instructionPtr = script.getInstructionPtr() + variables[instruction->args[0]];
+        instructionIndex = variables[instruction->args[0]];
       break;
 
     case op_call:
@@ -86,9 +95,11 @@ void VirtualMachine::execute(Script script)
       break;
 
     case op_end:
-      instructionPtr = nullptr;
+      instructionIndex = -1;
       break;
     }
+
+    instructionIndex++;
   }
 
 }
@@ -102,11 +113,9 @@ void VirtualMachine::registerAddon(addon newAddon,char * name)
 
 void VirtualMachine::dump()
 {
-  int i = 0;
-  for (std::vector<int>::iterator it = variables.begin();it != variables.end(); ++it)
+  for (int i = 0;i < N_VARIABLES;i++)
   {
-    printf("variables[%d] = %d\n",i,*it);
-    i++;
+    printf("variables[%d] = %d\n",i,variables[i]);
   }
 }
 

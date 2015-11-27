@@ -16,18 +16,11 @@ int main(int argc,char * * argv)
 
   Script * instructions = parseTokens(tokens);
 
-  Instruction * * instruction = instructions->getInstructionPtr();
-  printf("%d\n",(*instruction)->code);
-  while (false)
-  {
-    printf("%d\n",(*instruction)->code);
-    instruction++;
+  instructions->toFile("thots.psc");
 
-    if ((*instruction)->code == op_end)
-    {
-      break;
-    }
-  }
+  Script * moreInstructions = new Script("thots.psc");
+
+  moreInstructions->toFile("moreThots.psc");
 
   return 0;
 }

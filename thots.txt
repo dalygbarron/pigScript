@@ -1,4 +1,0 @@
-set 5 a
-set 1 b
-add a b a
-dump

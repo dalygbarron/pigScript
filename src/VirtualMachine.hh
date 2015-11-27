@@ -10,18 +10,16 @@
 #include <cstring>
 #include <stdint.h>
 
+#include "danylib/danylib.hh"
+
 #include "Instruction.hh"
 #include "Script.hh"
 
 
-//this is so that I can use a c string as a map key
-struct cmp_str
-{
-   bool operator()(char const * a, char const * b)const
-   {
-      return std::strcmp(a, b) < 0;
-   }
-};
+#define N_VARIABLES 256
+
+
+
 
 
 //the type of the function pointers that are called through the bytecode
@@ -31,11 +29,14 @@ typedef int (*addon)(char * args);
 class VirtualMachine
 {
 public:
+  //initialises the variables to 0
+  VirtualMachine();
+
   //deletes stored function names
   ~VirtualMachine();
 
   //run a given script
-  void execute(Script script);
+  void execute(Script * scriptPtr);
 
   //register a function with the virtual machine
   //takes ownership of the name
@@ -48,9 +49,9 @@ private:
   void call(char * args);
 
   //the map of functions to their names so that scripts can call them
-  std::map<char *,addon,cmp_str> functions;
+  std::map<char *,addon,danylib_cmpstrptr> functions;
   //where the running script's variables go
-  std::vector<int> variables;
+  int variables[N_VARIABLES];
 };
 
 
