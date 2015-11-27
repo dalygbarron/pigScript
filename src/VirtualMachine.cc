@@ -1,5 +1,7 @@
 #include "VirtualMachine.hh"
 
+#include "danylib/danylib.hh"
+
 #include "Instruction.hh"
 
 
@@ -14,7 +16,7 @@ VirtualMachine::VirtualMachine()
 
 VirtualMachine::~VirtualMachine()
 {
-  for (std::map<char *,addon,cmp_str>::iterator it = functions.begin();
+  for (std::map<char *,addon,danylib_cmpstrptr>::iterator it = functions.begin();
        it != functions.end();++it)
   {
     delete it->first;

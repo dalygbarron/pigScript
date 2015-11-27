@@ -8,13 +8,13 @@
 using namespace std;
 
 
-uint32_t LabelManager::registerPointer(char * token,uint16_t * labelPtr)
+void LabelManager::registerPointer(char * token,uint32_t * labelPtr)
 {
   labels[token].second.push_back(labelPtr);
 }
 
 
-uint32_t registerLabel(char * token,uint16_t address)
+void LabelManager::registerLabel(char * token,uint32_t address)
 {
   labels[token].first = address;
 }
@@ -30,11 +30,11 @@ void LabelManager::fillPointers()
        ++labelIterator)
   {
     //get the stuff that is being iterated over
-    uint16_t address = labelIterator->second.first;
-    vector<uint16_t *> pointers = labelIterator->second.second;
+    uint32_t address = labelIterator->second.first;
+    vector<uint32_t *> pointers = labelIterator->second.second;
 
     //iterate over all of the pointers to the label
-    for (vector<uint16_t *>::iterator pointerIterator = pointers.begin();
+    for (vector<uint32_t *>::iterator pointerIterator = pointers.begin();
          pointerIterator != pointers.end();++pointerIterator)
     {
       **pointerIterator = address;

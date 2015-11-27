@@ -19,8 +19,8 @@ Script::Script(char const * filename)
     printf("couldn't open file %s\n",filename);
   }
   //write in the number of instructions
-  int nInstructions;
-  fread(&nInstructions,N_INSTRUCTIONS_SIZE,1,inFile);
+  uint32_t nInstructions;
+  fread(&nInstructions,sizeof(uint32_t),1,inFile);
   //read each instruction
   for (int i = 0;i < nInstructions;i++)
   {
