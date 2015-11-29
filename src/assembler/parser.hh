@@ -12,7 +12,7 @@
 
 
 //parses some tokens into a script
-Script * parseTokens(std::vector<char *> * tokens);
+Script * parseTokens(std::vector<uint8_t *> * tokens);
 
 
 #endif

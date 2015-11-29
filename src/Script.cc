@@ -10,7 +10,7 @@ Script::Script()
 }
 
 
-Script::Script(char const * filename)
+Script::Script(uint8_t const * filename)
 {
   FILE * inFile = fopen(filename,"rb");
   //test if the file has been opened right
@@ -43,7 +43,7 @@ Instruction * Script::operator[](int index)
   return instructions[index];
 }
 
-void Script::toFile(char const * filename)
+void Script::toFile(uint8_t const * filename)
 {
   FILE * outFile = fopen(filename,"wb");
   //test if the file has been opened right

@@ -23,7 +23,7 @@
 
 
 //the type of the function pointers that are called through the bytecode
-typedef int (*addon)(char * args);
+typedef int (*addon)(uint8_t * args);
 
 
 class VirtualMachine
@@ -40,16 +40,16 @@ public:
 
   //register a function with the virtual machine
   //takes ownership of the name
-  void registerAddon(addon newAddon,char * name);
+  void registerAddon(addon newAddon,uint8_t * name);
 
 private:
   //displays all of the current variables on the commandline
   void dump();
   //calls a function from within the bytecode
-  void call(char * args);
+  void call(uint8_t * args);
 
   //the map of functions to their names so that scripts can call them
-  std::map<char *,addon,danylib_cmpstrptr> functions;
+  std::map<uint8_t *,addon,danylib_cmpstrptr> functions;
   //where the running script's variables go
   int variables[N_VARIABLES];
 };

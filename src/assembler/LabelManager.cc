@@ -10,28 +10,26 @@ using namespace std;
 
 void LabelManager::registerPointer(char * token,uint32_t * labelPtr)
 {
-  labels[token].second.push_back(labelPtr);
+  labels[token].pointers.push_back(labelPtr);
 }
 
 
 void LabelManager::registerLabel(char * token,uint32_t address)
 {
-  labels[token].first = address;
+  labels[token].value = address;
 }
 
 
 void LabelManager::fillPointers()
 {
-  //TODO: shorten these gigantic type names somehow
   //iterate over all of the labels
-  for (map<char *,AdressPointers,danylib_cmpstrptr>::iterator labelIterator =
-       labels.begin();
+  for (map<uint8_t *,Address,danylib_cmpstrptr>::iterator labelIterator = labels.begin();
        labelIterator != labels.end();
        ++labelIterator)
   {
     //get the stuff that is being iterated over
-    uint32_t address = labelIterator->second.first;
-    vector<uint32_t *> pointers = labelIterator->second.second;
+    uint32_t address = labelIterator->second.value;
+    vector<uint32_t *> pointers = labelIterator->second.pointers;
 
     //iterate over all of the pointers to the label
     for (vector<uint32_t *>::iterator pointerIterator = pointers.begin();

@@ -10,14 +10,14 @@
 #define TOKEN_BUFFER_LENGTH 1024
 #define FILE_BUFFER_LENGTH 4096
 
-#define COMMENT_CHAR ';'
+#define COMMENT_uint8_t ';'
 #define QUOTE '\"'
 
 
-std::vector<char *> * tokenize(char const * data)
+std::vector<uint8_t *> * tokenize(uint8_t const * data)
 {
-  std::vector<char *> * tokens = new std::vector<char *>();
-  char buffer[TOKEN_BUFFER_LENGTH];
+  std::vector<uint8_t *> * tokens = new std::vector<uint8_t *>();
+  uint8_t buffer[TOKEN_BUFFER_LENGTH];
   int bufferIndex = 0;
   bool inString = false;
   bool inComment = false;
@@ -71,11 +71,11 @@ std::vector<char *> * tokenize(char const * data)
       }
 
       //if a comment is starting
-      else if (data[i] == COMMENT_CHAR)
+      else if (data[i] == COMMENT_uint8_t)
       {
         inComment = true;
 
-        //if some characters have been saved
+        //if some uint8_tacters have been saved
         if (bufferIndex != 0)
         {
           //put the string into the list of tokens
@@ -90,7 +90,7 @@ std::vector<char *> * tokenize(char const * data)
       //if it's whitespace
       else if (iswspace(data[i]))
       {
-        //if some characters have been saved
+        //if some uint8_tacters have been saved
         if (bufferIndex != 0)
         {
           //put the string into the list of tokens
@@ -124,10 +124,10 @@ std::vector<char *> * tokenize(char const * data)
   return tokens;
 }
 
-std::vector<char *> * tokenize(FILE * dataFile)
+std::vector<uint8_t *> * tokenize(FILE * dataFile)
 {
-  char buffer[FILE_BUFFER_LENGTH];
-  char c;
+  uint8_t buffer[FILE_BUFFER_LENGTH];
+  uint8_t c;
 
   int i = 0;
   while ((c = fgetc(dataFile)) != EOF)

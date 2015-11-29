@@ -7,7 +7,7 @@
 #include "VirtualMachine.hh"
 
 
-int main(int argc,char * * argv)
+int main(int argc,uint8_t * * argv)
 {
   //make sure arguments are correct
   if (argc != 2)

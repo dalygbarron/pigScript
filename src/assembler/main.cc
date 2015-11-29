@@ -6,11 +6,11 @@
 #include "../Script.hh"
 
 
-int main(int argc,char * * argv)
+int main(int argc,uint8_t * * argv)
 {
   FILE * dataFile = fopen(argv[1],"r");
 
-  std::vector<char *> * tokens = tokenize(dataFile);
+  std::vector<uint8_t *> * tokens = tokenize(dataFile);
 
   fclose(dataFile);
 

@@ -37,7 +37,7 @@ public:
 
   //creates an instruction with it's op code, it's arguments and the number of them
   //it takes ownership of those args too
-  Instruction(OpCode pCode,char * pArgs);
+  Instruction(OpCode pCode,uint8_t * pArgs);
 
   //creates an instruction from a file
   Instruction(FILE * inFile);
@@ -51,7 +51,7 @@ public:
   //instruction's opcode
   OpCode code;
   //instruction's arguments
-  char * args;
+  uint8_t * args;
 };
 
 

@@ -16,7 +16,7 @@ VirtualMachine::VirtualMachine()
 
 VirtualMachine::~VirtualMachine()
 {
-  for (std::map<char *,addon,danylib_cmpstrptr>::iterator it = functions.begin();
+  for (std::map<uint8_t *,addon,danylib_cmpstrptr>::iterator it = functions.begin();
        it != functions.end();++it)
   {
     delete it->first;
@@ -107,7 +107,7 @@ void VirtualMachine::execute(Script * scriptPtr)
 }
 
 
-void VirtualMachine::registerAddon(addon newAddon,char * name)
+void VirtualMachine::registerAddon(addon newAddon,uint8_t * name)
 {
   functions[name] = newAddon;
 }
@@ -121,7 +121,7 @@ void VirtualMachine::dump()
   }
 }
 
-void VirtualMachine::call(char * args)
+void VirtualMachine::call(uint8_t * args)
 {
   if (functions.count(args + 1) == 1)
   {

@@ -9,16 +9,17 @@
 
 #include "../Script.hh"
 #include "../Instruction.hh"
+#include "LabelManager.hh"
 
 
 #define ARG_BUFFER_SIZE 2048
 
 
-static char symbolise(Script const * script,std::vector<char *> * symbols,char * token)
+static uint8_t symbolise(Script const * script,std::vector<uint8_t *> * symbols,uint8_t * token)
 {
   //search for it in the table
-  char i = 0;
-  for (std::vector<char *>::iterator it = symbols->begin();
+  uint8_t i = 0;
+  for (std::vector<uint8_t *>::iterator it = symbols->begin();
        it != symbols->end(); ++it)
   {
     //if it's already in the table
@@ -37,25 +38,26 @@ static char symbolise(Script const * script,std::vector<char *> * symbols,char *
 }
 
 
-Script * parseTokens(std::vector<char *> * tokens)
+Script * parseTokens(std::vector<uint8_t *> * tokens)
 {
-  std::vector<char *> symbols;
+  std::vector<uint8_t *> symbols;
+  LabelManager labelManager;
 
   Script * script = new Script();
-  int i = 0;
 
+  int i = 0;
   while (i < tokens->size())
   {
     if (strcmp(tokens->at(i),"jmp") == 0)
     {
-      *args = symbolise(&symbols,tokens->at(i + 1));
+      uint8_t * args = new uint8_t[sizeof(uint32_t)];
       script->instructions.push_back(new Instruction(op_jmp));
       i++;
     }
 
     else if (strcmp(tokens->at(i),"jeq") == 0)//TODO: join all the conditional jumps
     {
-      char * args = new char;
+      uint8_t * args = new uint8_t;
       *args = symbolise(&symbols,tokens->at(i + 1));
       script->instructions.push_back(new Instruction(op_jeq,args));
       i += 2;
@@ -63,7 +65,7 @@ Script * parseTokens(std::vector<char *> * tokens)
 
     else if (strcmp(tokens->at(i),"jne") == 0)
     {
-      char * args = new char;
+      uint8_t * args = new uint8_t;
       *args = symbolise(&symbols,tokens->at(i + 1));
       script->instructions.push_back(new Instruction(op_jne,args));
       i += 2;
@@ -71,7 +73,7 @@ Script * parseTokens(std::vector<char *> * tokens)
 
     else if (strcmp(tokens->at(i),"jlt") == 0)
     {
-      char * args = new char;
+      uint8_t * args = new uint8_t;
       *args = symbolise(&symbols,tokens->at(i + 1));
       script->instructions.push_back(new Instruction(op_jlt,args));
       i += 2;
@@ -79,7 +81,7 @@ Script * parseTokens(std::vector<char *> * tokens)
 
     else if (strcmp(tokens->at(i),"jle") == 0)
     {
-      char * args = new char;
+      uint8_t * args = new uint8_t;
       *args = symbolise(&symbols,tokens->at(i + 1));
       script->instructions.push_back(new Instruction(op_jle,args));
       i += 2;
@@ -87,7 +89,7 @@ Script * parseTokens(std::vector<char *> * tokens)
 
     else if (strcmp(tokens->at(i),"jgt") == 0)
     {
-      char * args = new char;
+      uint8_t * args = new uint8_t;
       *args = symbolise(&symbols,tokens->at(i + 1));
       script->instructions.push_back(new Instruction(op_jgt,args));
       i += 2;
@@ -95,7 +97,7 @@ Script * parseTokens(std::vector<char *> * tokens)
 
     else if (strcmp(tokens->at(i),"jge") == 0)
     {
-      char * args = new char;
+      uint8_t * args = new uint8_t;
       *args = symbolise(&symbols,tokens->at(i + 1));
       script->instructions.push_back(new Instruction(op_jge,args));
       i += 2;
@@ -106,13 +108,13 @@ Script * parseTokens(std::vector<char *> * tokens)
       OpCode code = op_call;
       int nArgs = atoi(tokens->at(i + 1));
 
-      char args[ARG_BUFFER_SIZE];
+      uint8_t args[ARG_BUFFER_SIZE];
 
       //put all the arguments into the argument array
       int placement = 2;
       for (int argI = 0;argI < nArgs;argI++)
       {
-        char * arg = tokens->at(i + 2 + argI);
+        uint8_t * arg = tokens->at(i + 2 + argI);
 
         //if it's a string literal
         if (arg[0] == '\"')
@@ -137,8 +139,8 @@ Script * parseTokens(std::vector<char *> * tokens)
         }
       }
       //put the length of the arguments into first place
-      args[0] = (char)(placement & 0xFF);
-      args[1] = (char)((placement >> 8) & 0xFF);
+      args[0] = (uint8_t)(placement & 0xFF);
+      args[1] = (uint8_t)((placement >> 8) & 0xFF);
 
       printf("placement:%d\n",placement);
 
@@ -151,7 +153,7 @@ Script * parseTokens(std::vector<char *> * tokens)
 
     else if (strcmp(tokens->at(i),"set") == 0)
     {
-      char * args = new char[2];
+      uint8_t * args = new uint8_t[2];
       args[0] = atoi(tokens->at(i + 1));
       args[1] = symbolise(&symbols,tokens->at(i + 2));
 
@@ -162,7 +164,7 @@ Script * parseTokens(std::vector<char *> * tokens)
 
     else if (strcmp(tokens->at(i),"add") == 0)
     {
-      char * args = new char[2];
+      uint8_t * args = new uint8_t[2];
       args[0] = symbolise(&symbols,tokens->at(i + 1));
       args[1] = symbolise(&symbols,tokens->at(i + 2));
       args[2] = symbolise(&symbols,tokens->at(i + 3));

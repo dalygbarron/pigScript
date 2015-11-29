@@ -10,9 +10,9 @@
 
 
 //turn a string into tokens
-std::vector<char *> * tokenize(char const * data);
+std::vector<uint8_t *> * tokenize(uint8_t const * data);
 
 //turn a file into tokens
-std::vector<char *> * tokenize(FILE * dataFile);
+std::vector<uint8_t *> * tokenize(FILE * dataFile);
 
 #endif
