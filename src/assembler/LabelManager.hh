@@ -16,7 +16,7 @@ using namespace std;
 typedef struct
 {
   uint32_t value;
-  vector<uint32_t *> pointers
+  vector<uint32_t *> pointers;
 }
 Address;
 

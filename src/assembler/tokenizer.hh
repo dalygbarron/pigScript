@@ -7,12 +7,13 @@
 
 #include <vector>
 #include <stdio.h>
+#include <stdint.h>
 
 
 //turn a string into tokens
-std::vector<uint8_t *> * tokenize(uint8_t const * data);
+std::vector<char *> * tokenize(char const * data);
 
 //turn a file into tokens
-std::vector<uint8_t *> * tokenize(FILE * dataFile);
+std::vector<char *> * tokenize(FILE * dataFile);
 
 #endif

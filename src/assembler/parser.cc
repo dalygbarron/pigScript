@@ -15,11 +15,11 @@
 #define ARG_BUFFER_SIZE 2048
 
 
-static uint8_t symbolise(Script const * script,std::vector<uint8_t *> * symbols,uint8_t * token)
+static uint8_t symbolise(Script const * script,std::vector<char *> * symbols,char * token)
 {
   //search for it in the table
   uint8_t i = 0;
-  for (std::vector<uint8_t *>::iterator it = symbols->begin();
+  for (std::vector<char *>::iterator it = symbols->begin();
        it != symbols->end(); ++it)
   {
     //if it's already in the table
@@ -38,9 +38,9 @@ static uint8_t symbolise(Script const * script,std::vector<uint8_t *> * symbols,
 }
 
 
-Script * parseTokens(std::vector<uint8_t *> * tokens)
+Script * parseTokens(std::vector<char *> * tokens)
 {
-  std::vector<uint8_t *> symbols;
+  std::vector<char *> symbols;
   LabelManager labelManager;
 
   Script * script = new Script();

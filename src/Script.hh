@@ -17,7 +17,7 @@ public:
   Script();
 
   //create a script from a file
-  Script(uint8_t const * filename);
+  Script(char const * filename);
 
   //destroy the script and it's instructions
   ~Script();
@@ -26,13 +26,13 @@ public:
   Instruction * operator[](int index);
 
   //writes the script into a file
-  void toFile(uint8_t const * filename);
+  void toFile(char const * filename);
 
   //gives you the length of the script
   int size();
 
   //let's the parsing thingo access the instructions
-  friend Script * parseTokens(std::vector<uint8_t *> * tokens);
+  friend Script * parseTokens(std::vector<char *> * tokens);
 
 private:
   //the instructions that it is made up of

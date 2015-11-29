@@ -23,7 +23,7 @@ void LabelManager::registerLabel(char * token,uint32_t address)
 void LabelManager::fillPointers()
 {
   //iterate over all of the labels
-  for (map<uint8_t *,Address,danylib_cmpstrptr>::iterator labelIterator = labels.begin();
+  for (map<char *,Address,danylib_cmpstrptr>::iterator labelIterator = labels.begin();
        labelIterator != labels.end();
        ++labelIterator)
   {

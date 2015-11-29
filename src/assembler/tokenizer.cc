@@ -14,10 +14,10 @@
 #define QUOTE '\"'
 
 
-std::vector<uint8_t *> * tokenize(uint8_t const * data)
+std::vector<char *> * tokenize(char const * data)
 {
-  std::vector<uint8_t *> * tokens = new std::vector<uint8_t *>();
-  uint8_t buffer[TOKEN_BUFFER_LENGTH];
+  std::vector<char *> * tokens = new std::vector<char *>();
+  char buffer[TOKEN_BUFFER_LENGTH];
   int bufferIndex = 0;
   bool inString = false;
   bool inComment = false;
@@ -124,10 +124,10 @@ std::vector<uint8_t *> * tokenize(uint8_t const * data)
   return tokens;
 }
 
-std::vector<uint8_t *> * tokenize(FILE * dataFile)
+std::vector<char *> * tokenize(FILE * dataFile)
 {
-  uint8_t buffer[FILE_BUFFER_LENGTH];
-  uint8_t c;
+  char buffer[FILE_BUFFER_LENGTH];
+  char c;
 
   int i = 0;
   while ((c = fgetc(dataFile)) != EOF)
