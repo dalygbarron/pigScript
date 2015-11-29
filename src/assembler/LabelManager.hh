@@ -16,7 +16,7 @@ using namespace std;
 typedef struct
 {
   uint32_t value;
-  vector<uint32_t *> pointers;
+  vector<uint8_t *> pointers;
 }
 Address;
 
@@ -33,12 +33,12 @@ class LabelManager
 {
 public:
   /**
-   * registers a pointer to a variable that will be filled with a given label's address
-   * at a later time.
+   * registers a pointer to a block of bytes that will be filled with a given label's
+   * address at a later time.
    * token is the token that this pointer is associated with, and labelPtr is the pointer
-   * to the variable that will be given the value
+   * to the bytes that will be given the value
    */
-  void registerPointer(char * token,uint32_t * labelPtr);
+  void registerPointer(char * token,uint8_t * labelPtr);
 
   /**
    * tell the label manager the address of a certain label.

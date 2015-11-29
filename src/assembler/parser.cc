@@ -55,51 +55,17 @@ Script * parseTokens(std::vector<char *> * tokens)
       i++;
     }
 
-    else if (strcmp(tokens->at(i),"jeq") == 0)//TODO: join all the conditional jumps
+    else if ((strcmp(tokens->at(i),"jeq") == 0) ||
+             (strcmp(tokens->at(i),"jne") == 0) ||
+             (strcmp(tokens->at(i),"jlt") == 0) ||
+             (strcmp(tokens->at(i),"jle") == 0) ||
+             (strcmp(tokens->at(i),"jgt") == 0) ||
+             (strcmp(tokens->at(i),"jge") == 0))
     {
-      uint8_t * args = new uint8_t;
-      *args = symbolise(&symbols,tokens->at(i + 1));
+      uint8_t * args = new uint8_t[sizeof(uint32_t) + 1];
+      labelManager.register
+      args[sizeof(uint32_t)] = symbolise(&symbols,tokens->at(i + 1));
       script->instructions.push_back(new Instruction(op_jeq,args));
-      i += 2;
-    }
-
-    else if (strcmp(tokens->at(i),"jne") == 0)
-    {
-      uint8_t * args = new uint8_t;
-      *args = symbolise(&symbols,tokens->at(i + 1));
-      script->instructions.push_back(new Instruction(op_jne,args));
-      i += 2;
-    }
-
-    else if (strcmp(tokens->at(i),"jlt") == 0)
-    {
-      uint8_t * args = new uint8_t;
-      *args = symbolise(&symbols,tokens->at(i + 1));
-      script->instructions.push_back(new Instruction(op_jlt,args));
-      i += 2;
-    }
-
-    else if (strcmp(tokens->at(i),"jle") == 0)
-    {
-      uint8_t * args = new uint8_t;
-      *args = symbolise(&symbols,tokens->at(i + 1));
-      script->instructions.push_back(new Instruction(op_jle,args));
-      i += 2;
-    }
-
-    else if (strcmp(tokens->at(i),"jgt") == 0)
-    {
-      uint8_t * args = new uint8_t;
-      *args = symbolise(&symbols,tokens->at(i + 1));
-      script->instructions.push_back(new Instruction(op_jgt,args));
-      i += 2;
-    }
-
-    else if (strcmp(tokens->at(i),"jge") == 0)
-    {
-      uint8_t * args = new uint8_t;
-      *args = symbolise(&symbols,tokens->at(i + 1));
-      script->instructions.push_back(new Instruction(op_jge,args));
       i += 2;
     }
 

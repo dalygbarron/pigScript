@@ -1,3 +1,16 @@
+# 29/11/2015
+ok motherfuckers, it's time to think! no wait actually all i'm doing is altering all of
+parsing, loading and saving of instructions although mostly parsing so that it works with
+the new label features. once that's done, it's time to make the compiler which goes from
+some higher level code down to written assembly which can then be assembled by this down
+to the binary format.
+
+Ok so I need to alter the label manager so that it writes values into byte arrays rather
+than actual single variables, in order to do so i'm also going to have to alter danylib,
+meaning it will have to go to version 2.0.
+Then I can get back to finishing the parser, which shouldn't take long after that since
+only jump instructions use labels.
+
 # 25/11/2015
 no wait, it can write the addresses in at compile time. it will use a label manager which
 both lets you make a reference to a label, or set the location of the label. In order to
