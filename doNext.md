@@ -1,3 +1,8 @@
+# 2/12/2015
+Ok, parsing now seems to work although I guess some more thorough testing should probably
+be done before I get too excited. anyway the virtual machine has a million compile errors.
+a lot of them seem to relate to some map, so that should be relatively easy to fix.
+
 # 29/11/2015
 ok motherfuckers, it's time to think! no wait actually all i'm doing is altering all of
 parsing, loading and saving of instructions although mostly parsing so that it works with

@@ -83,27 +83,36 @@ Instruction::~Instruction()
 
 void Instruction::toFile(FILE * outFile)
 {
+  printf("%d\n",code);
+
   fwrite(&code,OP_CODE_SIZE,1,outFile);
 
   switch(code)
   {
+  case op_jmp:
+    fwrite(args,1,LABEL_SIZE,outFile);
+    break;
+
   case op_jeq:
   case op_jne:
   case op_jlt:
   case op_jle:
   case op_jgt:
   case op_jge:
-    fwrite(args,1,1,outFile);
+    fwrite(args,1,LABEL_SIZE + VAR_SIZE,outFile);
     break;
 
   case op_set:
+    fwrite(args,1,CONST_SIZE + VAR_SIZE,outFile);
+    break;
+
   case op_move:
-    fwrite(args,1,2,outFile);
+    fwrite(args,1,VAR_SIZE * 2,outFile);
     break;
 
   case op_add:
   case op_sub:
-    fwrite(args,1,3,outFile);
+    fwrite(args,1,VAR_SIZE * 3,outFile);
     break;
 
   case op_call:

@@ -1,5 +1,6 @@
 #include "LabelManager.hh"
 
+#include <stdio.h>
 #include <stdint.h>
 #include <map>
 #include <vector>
@@ -35,7 +36,7 @@ void LabelManager::fillPointers()
     for (vector<uint8_t *>::iterator pointerIterator = pointers.begin();
          pointerIterator != pointers.end();++pointerIterator)
     {
-      danylib_**pointerIterator = address;
+      danylib_valueToBytes<uint32_t>(address,*pointerIterator);
     }
   }
 }
