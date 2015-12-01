@@ -29,6 +29,8 @@ Instruction::Instruction(FILE * inFile)
   code = op_jmp;
   fread(&code,OP_CODE_SIZE,1,inFile);
 
+  printf("instruction read %d\n",code);
+
   switch(code)
   {
   case op_jmp:
@@ -43,20 +45,23 @@ Instruction::Instruction(FILE * inFile)
   case op_jgt:
   case op_jge:
     args = new uint8_t[LABEL_SIZE + VAR_SIZE];
-    fread(args,LABEL_SIZE,1,inFile);
-    fread(args + LABEL_SIZE,VAR_SIZE,1,inFile);
+    fread(args,LABEL_SIZE + VAR_SIZE,1,inFile);
     break;
 
   case op_set:
-  case op_move:
     args = new uint8_t[CONST_SIZE + VAR_SIZE];
-    fread(args,CONST_SIZE + VAR_SIZE,2,inFile);
+    fread(args,CONST_SIZE + VAR_SIZE,1,inFile);
+    break;
+
+  case op_move:
+    args = new uint8_t[VAR_SIZE * 2];
+    fread(args,VAR_SIZE * 2,1,inFile);
     break;
 
   case op_add:
   case op_sub:
     args = new uint8_t[3];
-    fread(args,1,3,inFile);
+    fread(args,3,1,inFile);
     break;
 
   case op_call:

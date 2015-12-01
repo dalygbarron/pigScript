@@ -16,7 +16,7 @@ VirtualMachine::VirtualMachine()
 
 VirtualMachine::~VirtualMachine()
 {
-  for (std::map<uint8_t *,addon,danylib_cmpstrptr>::iterator it = functions.begin();
+  for (std::map<char *,addon,danylib_cmpstrptr>::iterator it = functions.begin();
        it != functions.end();++it)
   {
     delete it->first;
@@ -37,37 +37,37 @@ void VirtualMachine::execute(Script * scriptPtr)
     switch(instruction->code)
     {
     case op_jmp:
-      instructionIndex = variables[instruction->args[0]];
+      instructionIndex = danylib_bytesToValue<int>(instruction->args) - 1;
       break;
 
     case op_jeq:
       if (variables[instruction->args[1]] == 0)
-        instructionIndex = variables[instruction->args[0]];
+        instructionIndex = instruction->args[0];
       break;
 
     case op_jne:
       if (variables[instruction->args[1]] != 0)
-        instructionIndex = variables[instruction->args[0]];
+        instructionIndex = instruction->args[0];
       break;
 
     case op_jlt:
       if (variables[instruction->args[1]] < 0)
-        instructionIndex = variables[instruction->args[0]];
+        instructionIndex = instruction->args[0];
       break;
 
     case op_jle:
       if (variables[instruction->args[1]] <= 0)
-        instructionIndex = variables[instruction->args[0]];
+        instructionIndex = instruction->args[0];
       break;
 
     case op_jgt:
       if (variables[instruction->args[1]] > 0)
-        instructionIndex = variables[instruction->args[0]];
+        instructionIndex = instruction->args[0];
       break;
 
     case op_jge:
       if (variables[instruction->args[1]] >= 0)
-        instructionIndex = variables[instruction->args[0]];
+        instructionIndex = instruction->args[0];
       break;
 
     case op_call:
@@ -107,7 +107,7 @@ void VirtualMachine::execute(Script * scriptPtr)
 }
 
 
-void VirtualMachine::registerAddon(addon newAddon,uint8_t * name)
+void VirtualMachine::registerAddon(addon newAddon,char * name)
 {
   functions[name] = newAddon;
 }
@@ -123,6 +123,9 @@ void VirtualMachine::dump()
 
 void VirtualMachine::call(uint8_t * args)
 {
+  /*TODO: make this do stuff
+
+
   if (functions.count(args + 1) == 1)
   {
     //do stuff'
@@ -132,4 +135,6 @@ void VirtualMachine::call(uint8_t * args)
   {
     printf("%s is not a registered function, but continuing with execution\n",args + 1);
   }
+
+  */
 }

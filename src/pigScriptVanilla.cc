@@ -7,7 +7,7 @@
 #include "VirtualMachine.hh"
 
 
-int main(int argc,uint8_t * * argv)
+int main(int argc,char * * argv)
 {
   //make sure arguments are correct
   if (argc != 2)
@@ -22,7 +22,6 @@ int main(int argc,uint8_t * * argv)
   //run it
   VirtualMachine vm;
   vm.execute(script);
-
 
   printf ("running complete\n");
 
