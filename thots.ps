@@ -1,7 +1,24 @@
-jmp ebola
-set 1 a
+;
+;thots.ps
+;
+;Write a program that asks the user for a number n and prints the
+;sum of the numbers 1 to n.
 
-label ebola
-set 2 a
 
-dump
+;initialisation
+set 1 one                  ;one = 1
+call 2 "readInt" n         ;read in a value for n
+move n i                   ;i = n
+
+
+;loop where the maths occurs
+label loopStart
+  sub i one i              ;i -= 1
+  add n i n                ;n += i
+  jgt loopStart i          ;repeat if i > 0
+
+
+;output the results
+call 2 "writeString" "final value is "
+call 2 "writeInt" n
+call 1 "writeNL"

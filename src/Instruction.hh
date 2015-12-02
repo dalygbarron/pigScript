@@ -9,9 +9,15 @@
 #include <stdio.h>
 
 
-//the types of instructions there are
+#define OP_CODE_SIZE 1
+#define LABEL_SIZE 4
+#define VAR_SIZE 1
+#define CONST_SIZE 4
+
+
 enum OpCode
 {
+  //the actual instructions
   op_jmp,
   op_jeq,
   op_jne,
@@ -25,8 +31,15 @@ enum OpCode
   op_sub,
   op_move,
   op_dump,
-  op_end
+  op_end,
+
+  //these ones aren't actual instructions
+  label,
+  invalid
 };
+
+
+OpCode stringToOpCode(char const * input);
 
 
 class Instruction

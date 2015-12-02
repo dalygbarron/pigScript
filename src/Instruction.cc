@@ -2,13 +2,31 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <cstring>
 
 
-#define OP_CODE_SIZE 1
-#define LABEL_SIZE 4
-#define VAR_SIZE 1
-#define CONST_SIZE 4
-
+OpCode stringToOpCode(char const * token)
+{
+  if (strcmp(token,"jmp") == 0) return op_jmp;
+  else if (strcmp(token,"jeq") == 0) return op_jeq;
+  else if (strcmp(token,"jne") == 0) return op_jne;
+  else if (strcmp(token,"jlt") == 0) return op_jlt;
+  else if (strcmp(token,"jlg") == 0) return op_jle;
+  else if (strcmp(token,"jgt") == 0) return op_jgt;
+  else if (strcmp(token,"jge") == 0) return op_jge;
+  else if (strcmp(token,"call") == 0) return op_call;
+  else if (strcmp(token,"set") == 0) return op_set;
+  else if (strcmp(token,"add") == 0) return op_add;
+  else if (strcmp(token,"sub") == 0) return op_sub;
+  else if (strcmp(token,"move") == 0) return op_move;
+  else if (strcmp(token,"dump") == 0) return op_dump;
+  else if (strcmp(token,"end") == 0) return op_end;
+  else if (strcmp(token,"label") == 0) return label;
+  else
+  {
+    return invalid;
+  }
+}
 
 
 Instruction::Instruction(OpCode pCode):
@@ -28,8 +46,6 @@ Instruction::Instruction(FILE * inFile)
 {
   code = op_jmp;
   fread(&code,OP_CODE_SIZE,1,inFile);
-
-  printf("instruction read %d\n",code);
 
   switch(code)
   {
@@ -61,7 +77,7 @@ Instruction::Instruction(FILE * inFile)
   case op_add:
   case op_sub:
     args = new uint8_t[3];
-    fread(args,3,1,inFile);
+    fread(args,VAR_SIZE * 3,1,inFile);
     break;
 
   case op_call:

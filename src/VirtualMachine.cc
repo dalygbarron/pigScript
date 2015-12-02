@@ -14,16 +14,6 @@ VirtualMachine::VirtualMachine()
 }
 
 
-VirtualMachine::~VirtualMachine()
-{
-  for (std::map<char *,addon,danylib_cmpstrptr>::iterator it = functions.begin();
-       it != functions.end();++it)
-  {
-    delete it->first;
-  }
-}
-
-
 void VirtualMachine::execute(Script * scriptPtr)
 {
   Script script = *scriptPtr;
@@ -37,37 +27,37 @@ void VirtualMachine::execute(Script * scriptPtr)
     switch(instruction->code)
     {
     case op_jmp:
-      instructionIndex = danylib_bytesToValue<int>(instruction->args) - 1;
+      instructionIndex = danylib_bytesToValue<uint32_t>(instruction->args) - 1;
       break;
 
     case op_jeq:
-      if (variables[instruction->args[1]] == 0)
-        instructionIndex = instruction->args[0];
+      if (variables[instruction->args[LABEL_SIZE]] == 0)
+        instructionIndex = danylib_bytesToValue<uint32_t>(instruction->args) - 1;
       break;
 
     case op_jne:
-      if (variables[instruction->args[1]] != 0)
-        instructionIndex = instruction->args[0];
+      if (variables[instruction->args[LABEL_SIZE]] != 0)
+        instructionIndex = danylib_bytesToValue<uint32_t>(instruction->args) - 1;
       break;
 
     case op_jlt:
-      if (variables[instruction->args[1]] < 0)
-        instructionIndex = instruction->args[0];
+      if (variables[instruction->args[LABEL_SIZE]] < 0)
+        instructionIndex = danylib_bytesToValue<uint32_t>(instruction->args) - 1;
       break;
 
     case op_jle:
-      if (variables[instruction->args[1]] <= 0)
-        instructionIndex = instruction->args[0];
+      if (variables[instruction->args[LABEL_SIZE]] <= 0)
+        instructionIndex = danylib_bytesToValue<uint32_t>(instruction->args) - 1;
       break;
 
     case op_jgt:
-      if (variables[instruction->args[1]] > 0)
-        instructionIndex = instruction->args[0];
+      if (variables[instruction->args[LABEL_SIZE]] > 0)
+        instructionIndex = danylib_bytesToValue<uint32_t>(instruction->args) - 1;
       break;
 
     case op_jge:
-      if (variables[instruction->args[1]] >= 0)
-        instructionIndex = instruction->args[0];
+      if (variables[instruction->args[LABEL_SIZE]] >= 0)
+        instructionIndex = danylib_bytesToValue<uint32_t>(instruction->args) - 1;
       break;
 
     case op_call:
@@ -75,7 +65,7 @@ void VirtualMachine::execute(Script * scriptPtr)
       break;
 
     case op_set:
-      variables[instruction->args[1]] = instruction->args[0];
+      variables[instruction->args[CONST_SIZE]] = danylib_bytesToValue<int>(instruction->args);
       break;
 
     case op_add:
@@ -97,7 +87,7 @@ void VirtualMachine::execute(Script * scriptPtr)
       break;
 
     case op_end:
-      instructionIndex = -1;
+      instructionIndex = -2;
       break;
     }
 
@@ -107,7 +97,7 @@ void VirtualMachine::execute(Script * scriptPtr)
 }
 
 
-void VirtualMachine::registerAddon(addon newAddon,char * name)
+void VirtualMachine::registerAddon(addon newAddon,char const * name)
 {
   functions[name] = newAddon;
 }
@@ -121,20 +111,21 @@ void VirtualMachine::dump()
   }
 }
 
+
 void VirtualMachine::call(uint8_t * args)
 {
-  /*TODO: make this do stuff
-
-
-  if (functions.count(args + 1) == 1)
+  if (functions.count((char *)(args + 2)) == 1)
   {
-    //do stuff'
-    printf("calling %s\n",args + 1);
+    //skip the length of arguments and function name
+    int start = 2;
+    while (args[start] != '\0')
+    {
+      start++;
+    }
+    functions[(char *)(args + 2)](args + start + 1,variables);
   }
   else
   {
-    printf("%s is not a registered function, but continuing with execution\n",args + 1);
+    printf("%s is not a registered function, but continuing with execution\n",args + 2);
   }
-
-  */
 }

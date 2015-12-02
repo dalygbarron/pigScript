@@ -5,6 +5,7 @@
 
 #include "Script.hh"
 #include "VirtualMachine.hh"
+#include "ioPlugins.hh"
 
 
 int main(int argc,char * * argv)
@@ -21,6 +22,8 @@ int main(int argc,char * * argv)
 
   //run it
   VirtualMachine vm;
+  ioPlugins_addAddons(&vm);
+
   vm.execute(script);
 
   printf ("running complete\n");
