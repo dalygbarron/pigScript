@@ -16,11 +16,7 @@ int main(int argc,char * * argv)
 
   Script * instructions = parseTokens(tokens);
 
-  instructions->toFile("thots.psc");
-
-  Script * moreInstructions = new Script("thots.psc");
-
-  moreInstructions->toFile("moreThots.psc");
+  instructions->toFile(argv[2]);
 
   return 0;
 }
