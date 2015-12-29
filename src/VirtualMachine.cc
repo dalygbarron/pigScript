@@ -107,7 +107,7 @@ void VirtualMachine::dump()
 {
   for (int i = 0;i < N_VARIABLES;i++)
   {
-    printf("variables[%d] = %d\n",i,variables[i]);
+    printf("register %d = %d\n",i,variables[i]);
   }
 }
 
